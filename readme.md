@@ -28,24 +28,23 @@ A central orchestrator routes incoming requests to one of three specialist agent
 This division of labor isn't just architectural tidiness — it's a deliberate security boundary. `collections_agent`, for example, can *read* overdue invoices but has no ability to modify any data, because there's no legitimate reason for an email-drafting agent to have write access to financial records.
 
 ## Architecture
-
 ```mermaid
 flowchart TD
     User([User]) --> Orchestrator
 
-    Orchestrator["ledger_orchestrator<br/>(root agent, Gemini 2.5 Flash)"]
+    Orchestrator["ledger_orchestrator<br/>root agent, Gemini 2.5 Flash"]
 
-    Orchestrator -->|routes| Intake["intake_agent<br/>(vision parsing)"]
-    Orchestrator -->|routes| Reconciliation["reconciliation_agent<br/>(matching)"]
-    Orchestrator -->|routes| Collections["collections_agent<br/>(follow-ups)"]
+    Orchestrator -->|routes| Intake["intake_agent<br/>vision parsing"]
+    Orchestrator -->|routes| Reconciliation["reconciliation_agent<br/>matching"]
+    Orchestrator -->|routes| Collections["collections_agent<br/>follow-ups"]
 
-    Intake -->|create_invoice| MCP
-    Reconciliation -->|get_pending_invoices<br/>get_ledger_transactions<br/>match_invoice_to_transaction<br/>flag_invoice_mismatch| MCP
-    Collections -->|get_overdue_invoices| MCP
+    Intake --> MCP
+    Reconciliation --> MCP
+    Collections --> MCP
 
-    MCP["MCP Server<br/>(FastMCP, stdio transport)"]
+    MCP["MCP Server<br/>FastMCP, stdio transport"]
 
-    MCP -->|supabase-py<br/>service_role key| DB[(Supabase Postgres<br/>schema: ledgerops)]
+    MCP --> DB[(Supabase Postgres<br/>schema: ledgerops)]
 
     DB --> Invoices[invoices]
     DB --> Transactions[ledger_transactions]
