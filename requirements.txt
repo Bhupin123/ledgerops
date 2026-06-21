@@ -1,0 +1,24 @@
+# LedgerOps — Python dependencies
+#
+# Install with:  pip install -r requirements.txt
+#
+# Core dependencies:
+#   google-adk      — Google Agent Development Kit; provides the Agent class,
+#                     runner, and `adk web` dev server.
+#   google-genai    — Google GenAI SDK; used by ADK under the hood for Gemini
+#                     model calls.  Also useful for direct API access later.
+#   python-dotenv   — Loads .env files so GOOGLE_API_KEY and other secrets
+#                     are available as environment variables.
+
+google-adk>=1.0.0
+google-genai>=1.0.0
+python-dotenv>=1.0.0
+
+# MCP server dependencies:
+#   fastmcp         — FastMCP framework for building Model Context Protocol
+#                     servers.  Provides the @mcp.tool() decorator and
+#                     handles JSON-RPC transport automatically.
+#   supabase        — Official Supabase Python client.  Used to query and
+#                     update the ledgerops schema (invoices, transactions).
+fastmcp>=2.0.0
+supabase>=2.0.0
